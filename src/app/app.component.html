@@ -1,0 +1,41 @@
+<div class="wrapper">
+  <button class="close" [disabled]="getActive()" (click)="closeDialog=true">Close event</button>
+  <div class="orders-wrapper">
+    <div class="order-wrapper" *ngFor='let order of orders;let ind=index' [ngClass]="getClass(order.action)" [id]="'item'+ind">
+      <div class="header">ORDER {{order._id}}</div>
+      <ul class="products">
+        <span style="color:#F2AC21">Products</span>
+        <li *ngFor="let prod of order.orderedProducts">X{{prod.quantity}} {{prod.title}}<span *ngIf="prod.size">({{prod.size}})</span>
+          <span  *ngIf="prod.defaults&&prod.defaults.length">(<span *ngFor="let def of prod.defaults">{{def.title}}
+            <span *ngIf="def.selected_qty">(X{{def.selected_qty}})</span>
+            , </span>)</span>
+            <span *ngIf="prod.isSpecial">(
+              <span *ngFor="let menu of prod.menus">
+                <span *ngIf="menu.default">{{menu.default.title}}<span *ngIf="menu.default.size">({{menu.default.size}})</span>
+                <span  *ngIf="menu.default.defaults&&menu.default.defaults.length">(<span *ngFor="let def of menu.default.defaults">{{def.title}}
+                    <span *ngIf="def.selected_qty">(X{{def.selected_qty}})</span>
+                    , </span>)</span>
+                ,
+                </span>
+              </span>)
+            </span>
+        </li>
+      </ul>
+      <div class="special-instructions"><span style="color:#F2AC21">Special instructions: </span>{{order.special_instructions?order.special_instructions:"NO"}}</div>
+      <div class="alergy-info"><span style="color:#F2AC21">Allergy information: </span>{{order.alergy_info?order.alergy_info:"NO"}}</div>
+      <button class="action-button" (click)="changeAction(order.action,order._id,ind)">{{order.action|titlecase}}</button>
+      <div class="timer">Timer:</div>
+    </div>   
+  </div>
+  <div class="orders">
+    <a class="order" *ngFor='let order of orders;let ind=index' >{{order._id}}</a>
+  </div>
+</div>
+
+<div class="close_dialog" *ngIf="closeDialog">
+  <div class="close_form">
+    <div class="header">Are you sure you want to close an event?</div>
+    <button class="cancel" (click)="closeDialog=false">Cancel</button>
+    <button class="close" (click)="close()">Close</button>
+  </div>
+</div>
