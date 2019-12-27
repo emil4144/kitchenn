@@ -25,7 +25,7 @@
       <div class="alergy-info"><span style="color:#F2AC21">Allergy information: </span>{{order.alergy_info?order.alergy_info:"NO"}}</div>
       <button class="action-button" (click)="changeAction(order.action,order._id,ind)">{{order.action|titlecase}}</button>
       <div class="timer">Timer:</div>
-    </div>   
+    </div>
   </div>
   <div class="orders">
     <a class="order" *ngFor='let order of orders;let ind=index' >{{order._id}}</a>
@@ -39,3 +39,7 @@
     <button class="close" (click)="close()">Close</button>
   </div>
 </div>
+
+
+
+<router-outlet></router-outlet>

@@ -1,0 +1,38 @@
+<form [formGroup]="loginForm" class="loginForm">
+
+  <!-- E-mail field-->
+  <mat-form-field>
+    <input matInput id="email" [placeholder]="'E-mail'" formControlName="email" (focus)="onInputFocus($event)"
+           (input)="onInputChange($event)" [value]="loginValue">
+    <mat-error *ngIf="email.hasError('required')">E-mail is <strong>required</strong></mat-error>
+    <mat-error *ngIf="email.hasError('patternInvalid')">E-mail is <strong>invalid</strong></mat-error>
+  </mat-form-field>
+
+  <!-- Password field -->
+  <mat-form-field>
+    <input matInput id="password" type="password" [placeholder]="'Password'" (focus)="onInputFocus($event)"
+           (input)="onInputChange($event)" [value]="passValue" class="input" formControlName="password">
+    <!--            <ng-container *ngIf="pass.errors && (!pass.pristine||pass.touched)">-->
+    <mat-error [hidden]="!pass.hasError('required')">Password is <strong>required</strong></mat-error>
+    <!--            </ng-container>-->
+  </mat-form-field>
+
+  <!-- Login/ navigate-to-register page buttons -->
+  <div class="actions">
+    <button (click)="login()" [disabled]="!loginForm.valid ">
+      Log in
+    </button>
+  </div>
+</form>
+
+
+<!--The content below is only a placeholder and can be replaced.-->
+<div class="simple-keyboard-container">
+  <div class="keyboard-container">
+    <div class="keyboard">
+      <!--      <input  class="input" value={{value}}-->
+      <!--             placeholder="Tap on the virtual keyboard to start"/>-->
+      <div class="simple-keyboard"></div>
+    </div>
+  </div>
+</div>

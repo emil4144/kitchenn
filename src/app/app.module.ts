@@ -1,23 +1,58 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import { RouterModule, Routes, ExtraOptions } from '@angular/router';
-import {HttpClientModule} from '@angular/common/http'
-import { AppComponent } from './app.component';
-import { environment } from '../environments/environment';
-const config: SocketIoConfig = { url: `${environment.staticUrl}`, options: {} };
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {SocketIoModule, SocketIoConfig} from 'ngx-socket-io';
+import {RouterModule, Routes, ExtraOptions} from '@angular/router';
+import {HttpClientModule} from '@angular/common/http';
+import {AppComponent} from './app.component';
+import {environment} from '../environments/environment';
+import {MaterialModule} from './modules/material-module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LoginComponent} from './components/login/login.component';
+import {JwtHelperService, JwtModule} from '@auth0/angular-jwt';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NotFoundComponent} from './components/not-found/not-found.component';
+import {AppRoutingModule} from './app-routing.module';
+import {KeyboardComponent} from './components/keyboard/keyboard.component';
 
+const config: SocketIoConfig = {url: `${environment.staticUrl}`, options: {}};
+
+// Token getter for JWT module
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    NotFoundComponent,
+    KeyboardComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
     SocketIoModule.forRoot(config),
+    MaterialModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter,
+        whitelistedDomains: ['localhost:3000'],
+        blacklistedRoutes: ['localhost:3000/auth/']
+      }
+    })
   ],
-  providers: [],
+  providers: [
+    JwtHelperService
+  ],
+  entryComponents: [
+    LoginComponent,
+    KeyboardComponent
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
