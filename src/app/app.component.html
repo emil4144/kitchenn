@@ -1,6 +1,5 @@
 <div class="wrapper">
   <button class="close" *ngIf="auth.loggedIn()" [disabled]="getActive()" (click)="closeDialog=true">Close event</button>
-  <button class="close" *ngIf="auth.loggedIn()" (click)="auth.logout()">Logout</button>
   <div class="orders-wrapper">
     <div class="order-wrapper" *ngFor='let order of orders;let ind=index' [ngClass]="getClass(order.action)"
          [id]="'item'+ind">
