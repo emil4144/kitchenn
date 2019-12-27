@@ -28,7 +28,7 @@ export class AuthService {
    * @param formData formData object
    */
   login(formData) {
-    return this.httpClient.post(`${API_URL}auth/login`, formData);
+    return this.httpClient.post(`${API_URL}kitchn/login`, formData);
   }
 
   /**

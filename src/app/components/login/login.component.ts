@@ -7,6 +7,7 @@ import {patternValidator} from '../../helpers/pattern-validator';
 import {EMAIL_PATTERN} from '../../constants/app.config';
 import {AuthService} from '../../services/auth.service';
 import Keyboard from 'simple-keyboard';
+import {MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -31,6 +32,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private  fb: FormBuilder,
     public auth: AuthService,
     public router: Router,
+    private dialogRef: MatDialogRef<LoginComponent>
   ) {
     this.loginForm = fb.group({
       email: new FormControl(null, {
@@ -42,28 +44,22 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+
+
   }
 
   login() {
-    // if (this.loginForm.valid) {
+    if (this.loginForm.valid) {
 
-    this.subscriptions.push(this.auth.login(this.loginForm.value).subscribe((dt: any) => {
+      this.subscriptions.push(this.auth.login(this.loginForm.value).subscribe((dt: any) => {
 
-      // Saving token to browser local storage
-      localStorage.setItem('token', (dt.hasOwnProperty('token') ? dt.token : ''));
+        // Saving token to browser local storage
+        localStorage.setItem('token', dt);
 
-      // Gets current user data
-      // this.auth.userData = jwtDecode(localStorage.getItem('token'));
-
-      // Getting redirect url part matching current user role
-      // const currentRole = this.auth.userData.role.name.toLowerCase();
-      // const userType = USER_TYPES.find(d => d.role === currentRole);
-
-      // Navigate to the dashboard page
-      this.router.navigate([`admin/dashboard/show`]); // ${userType ? userType.label : 'admin'}
-
-    }));
-    // }
+        this.dialogRef.close();
+        this.router.navigate(['/kitchen_kiosk']);
+      }));
+    }
 
   }
 
@@ -77,15 +73,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   onChange = (input: string) => {
     this.loginValue = input;
-    console.log('Input changed', this.selectedInput, input);
+
+    if (this.keyboard) {
+      this.loginForm.controls[this.selectedInput].patchValue(input);
+    }
   };
 
-  onPassChange(input: string) {
-    this.passValue = input;
-  }
-
   onKeyPress = (button: string) => {
-    console.log('Button pressed', button);
+    // console.log('Button pressed', button);
 
     /**
      * If you want to handle the shift and caps lock buttons
@@ -95,22 +90,19 @@ export class LoginComponent implements OnInit, AfterViewInit {
     }
   };
 
-  onInputChange = (event: any) => {
-    console.log(event.target.value, event.target.id);
-    this.keyboard.setInput(event.target.value, event.target.id);
-  };
-
   onInputFocus(event: any) {
     this.selectedInput = event.target.id;
-    console.log(this.selectedInput);
+    // console.log('FOCUSED' + this.selectedInput);
+
+
     this.keyboard.setOptions({
       inputName: event.target.id
     });
   }
 
   handleShift = () => {
-    let currentLayout = this.keyboard.options.layoutName;
-    let shiftToggle = currentLayout === 'default' ? 'shift' : 'default';
+    const currentLayout = this.keyboard.options.layoutName;
+    const shiftToggle = currentLayout === 'default' ? 'shift' : 'default';
 
     this.keyboard.setOptions({
       layoutName: shiftToggle
@@ -124,4 +116,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
   get pass(): AbstractControl {
     return this.loginForm.get('password');
   }
+
+
 }

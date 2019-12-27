@@ -3,6 +3,7 @@ import {Socket} from 'ngx-socket-io';
 import {MatDialog} from '@angular/material';
 import {LoginComponent} from './components/login/login.component';
 import {KeyboardComponent} from './components/keyboard/keyboard.component';
+import {AuthService} from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private socket: Socket,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public auth: AuthService
   ) {
     this.socket.emit('getOrders');
     this.socket.on('initorder', (data) => {
@@ -30,7 +32,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.showLoginPopup();
-    this.showKeyboard();
   }
 
   changeAction(action, id, i) {
@@ -79,13 +80,13 @@ export class AppComponent implements OnInit {
   }
 
   showLoginPopup() {
-    this.dialog.open(LoginComponent, {width: '300', height: '400', panelClass: 'login-dialog-container'});
+    if (!this.auth.loggedIn()) {
+      this.dialog.open(LoginComponent, {width: '300', height: '400', panelClass: 'login-dialog-container'});
+    }
   }
 
 
-  showKeyboard() {
-    // this.dialog.open(KeyboardComponent, {width: '50%', height: '400', panelClass: 'keyboard-dialog-container'});
-  }
+
 
 
 }

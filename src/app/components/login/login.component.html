@@ -2,16 +2,14 @@
 
   <!-- E-mail field-->
   <mat-form-field>
-    <input matInput id="email" [placeholder]="'E-mail'" formControlName="email" (focus)="onInputFocus($event)"
-           (input)="onInputChange($event)" [value]="loginValue">
+    <input matInput id="email" [placeholder]="'E-mail'" readonly formControlName="email" (focus)="onInputFocus($event)">
     <mat-error *ngIf="email.hasError('required')">E-mail is <strong>required</strong></mat-error>
     <mat-error *ngIf="email.hasError('patternInvalid')">E-mail is <strong>invalid</strong></mat-error>
   </mat-form-field>
 
   <!-- Password field -->
   <mat-form-field>
-    <input matInput id="password" type="password" [placeholder]="'Password'" (focus)="onInputFocus($event)"
-           (input)="onInputChange($event)" [value]="passValue" class="input" formControlName="password">
+    <input matInput id="password" readonly type="password" [placeholder]="'Password'"(focus)="onInputFocus($event)"  class="input" formControlName="password">
     <!--            <ng-container *ngIf="pass.errors && (!pass.pristine||pass.touched)">-->
     <mat-error [hidden]="!pass.hasError('required')">Password is <strong>required</strong></mat-error>
     <!--            </ng-container>-->
